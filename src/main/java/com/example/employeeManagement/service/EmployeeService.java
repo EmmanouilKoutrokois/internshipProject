@@ -4,11 +4,14 @@ import com.example.employeeManagement.dto.EmployeeDTO;
 import com.example.employeeManagement.entity.Employee;
 import com.example.employeeManagement.repository.EmployeeRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
+
 public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;

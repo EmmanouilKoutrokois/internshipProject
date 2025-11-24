@@ -5,11 +5,14 @@ import com.example.employeeManagement.entity.Product;
 import com.example.employeeManagement.repository.ProductRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
+
 public class ProductService {
 
     private final ProductRepository productRepository;

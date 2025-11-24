@@ -5,11 +5,14 @@ import com.example.employeeManagement.entity.VacationRequest;
 import com.example.employeeManagement.repository.VacationRequestRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
+
 public class VacationRequestService {
 
     private final VacationRequestRepository vacationRequestRepository;

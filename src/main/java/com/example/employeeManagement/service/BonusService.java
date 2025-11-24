@@ -5,12 +5,14 @@ import com.example.employeeManagement.entity.Bonus;
 import com.example.employeeManagement.repository.BonusRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 import java.time.LocalDate;
 
 @Service
+@Transactional
 public class BonusService {
 
     private final BonusRepository bonusRepository;
@@ -55,7 +57,7 @@ public class BonusService {
         Bonus existing = bonusRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Bonus not found"));
         existing.setAmount(dto.getAmount());
-        existing.setDateGranted(dto.getDateGranted());
+        existing.setDateGranted(LocalDate.parse(dto.getDateGranted()));
         existing.setEmployeeId(dto.getEmployeeId());
         existing.setId(dto.getId());
         Bonus saved = bonusRepository.save(existing);
