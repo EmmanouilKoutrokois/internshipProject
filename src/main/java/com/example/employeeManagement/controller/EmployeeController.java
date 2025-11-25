@@ -4,7 +4,14 @@ import com.example.employeeManagement.dto.EmployeeDTO;
 import com.example.employeeManagement.entity.Employee;
 import com.example.employeeManagement.service.EmployeeService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -28,8 +35,8 @@ public class EmployeeController {
     // Read All
     @GetMapping
     public ResponseEntity<List<EmployeeDTO>> getAllEmployees() {
-        List<EmployeeDTO> employees = employeeService.findAll();
-        return ResponseEntity.ok(employees);
+        List<EmployeeDTO> employees = employeeService.findAll();  // This now returns List<EmployeeDTO>
+        return ResponseEntity.ok(employees);  // Return the DTOs
     }
 
     // Read One

@@ -1,8 +1,9 @@
 package com.example.employeeManagement.controller;
 
 import com.example.employeeManagement.dto.CompanyDTO;
-import com.example.employeeManagement.entity.Company;
 import com.example.employeeManagement.service.CompanyService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,8 +30,9 @@ public class CompanyController {
     }
 
     @PostMapping
-    public Company createCompany(@RequestBody Company company) {
-        return companyService.save(company);
+    public ResponseEntity<CompanyDTO> createCompany(@RequestBody CompanyDTO companyDTO) {
+        CompanyDTO savedCompany = companyService.save(companyDTO);  // Service method expects a CompanyDTO
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedCompany);  // Return the saved DTO
     }
 
     @DeleteMapping("/{id}")
