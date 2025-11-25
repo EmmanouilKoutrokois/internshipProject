@@ -2,6 +2,7 @@ package com.example.employeeManagement.controller;
 
 import com.example.employeeManagement.dto.BonusDTO;
 import com.example.employeeManagement.service.BonusService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,6 +12,7 @@ import java.util.List;
 @RequestMapping("/bonuses")
 public class BonusController {
 
+    @Autowired
     private final BonusService bonusService;
 
     public BonusController(BonusService bonusService) {
@@ -51,5 +53,9 @@ public class BonusController {
     public ResponseEntity<Void> deleteBonus(@PathVariable Long id) {
         bonusService.deleteById(id);
         return ResponseEntity.noContent().build();
+    }
+    @GetMapping("/calculate-bonus")
+    public Double calculateBonus(@RequestParam Double salary, @RequestParam String season) {
+        return bonusService.calculateBonus(salary, season);
     }
 }

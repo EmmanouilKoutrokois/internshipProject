@@ -2,14 +2,15 @@ package com.example.employeeManagement.service;
 
 import com.example.employeeManagement.dto.BonusDTO;
 import com.example.employeeManagement.entity.Bonus;
+import com.example.employeeManagement.enums.BonusRate;
 import com.example.employeeManagement.repository.BonusRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.time.LocalDate;
 
 @Service
 @Transactional
@@ -67,5 +68,12 @@ public class BonusService {
     // Delete
     public void deleteById(Long id) {
         bonusRepository.deleteById(id);
+    }
+    // Custom method to calculate the bonus
+    public Double calculateBonus(Double salary, String season) {
+        // Get the rate from the enum using the season
+        Double rate = BonusRate.getRateBySeason(season);
+        // Calculate and return the bonus
+        return salary * rate;
     }
 }
