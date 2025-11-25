@@ -39,4 +39,8 @@ public class EmployeeService {
     public EmployeeDTO update(Long id, EmployeeDTO dto) {
         return dto;
     }
+
+    public EmployeeDTO save(EmployeeDTO dto) {
+        return dto;
+    }
 }

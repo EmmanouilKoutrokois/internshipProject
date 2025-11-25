@@ -1,5 +1,6 @@
 package com.example.employeeManagement.controller;
 
+import com.example.employeeManagement.dto.CompanyDTO;
 import com.example.employeeManagement.entity.Company;
 import com.example.employeeManagement.service.CompanyService;
 import org.springframework.web.bind.annotation.*;
@@ -18,12 +19,12 @@ public class CompanyController {
     }
 
     @GetMapping
-    public List<Company> getAllCompanies() {
+    public List<CompanyDTO> getAllCompanies() {
         return companyService.findAll();
     }
 
     @GetMapping("/{id}")
-    public Optional<Company> getCompanyById(@PathVariable Long id) {
+    public Optional<CompanyDTO> getCompanyById(@PathVariable Long id) {
         return companyService.findById(id);
     }
 
