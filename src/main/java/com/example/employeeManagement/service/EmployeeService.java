@@ -3,6 +3,7 @@ package com.example.employeeManagement.service;
 import com.example.employeeManagement.dto.EmployeeDTO;
 import com.example.employeeManagement.entity.Employee;
 import com.example.employeeManagement.repository.EmployeeRepository;
+import com.example.employeeManagement.service.interfaces.EmployeeServiceInterface;
 import com.example.employeeManagement.service.serviceMapper.Mapper;  // Import the Mapper class
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,7 +13,7 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class EmployeeService {
+public class EmployeeService implements EmployeeServiceInterface {  // Implement the interface
 
     private final EmployeeRepository employeeRepository;
     private final Mapper mapper;
@@ -22,22 +23,26 @@ public class EmployeeService {
         this.mapper = mapper;
     }
 
-    public EmployeeDTO save(EmployeeDTO dto) {
+    @Override
+    public EmployeeDTO save(EmployeeDTO dto) {  // Implement method from interface
         Employee employee = mapper.convertToEntity(dto);
         Employee saved = employeeRepository.save(employee);
         return mapper.convertToDTO(saved);
     }
 
-    public List<EmployeeDTO> findAll() {
+    @Override
+    public List<EmployeeDTO> findAll() {  // Implement method from interface
         List<Employee> employees = employeeRepository.findAll();
         return employees.stream().map(mapper::convertToDTO).toList();
     }
 
-    public Optional<EmployeeDTO> findById(Long id) {
+    @Override
+    public Optional<EmployeeDTO> findById(Long id) {  // Implement method from interface
         return employeeRepository.findById(id).map(mapper::convertToDTO);
     }
 
-    public EmployeeDTO update(Long id, EmployeeDTO dto) {
+    @Override
+    public EmployeeDTO update(Long id, EmployeeDTO dto) {  // Implement method from interface
         Employee existing = employeeRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Employee not found"));
         existing.setId(dto.getId());
@@ -46,7 +51,8 @@ public class EmployeeService {
         return mapper.convertToDTO(saved);
     }
 
-    public void deleteById(Long id) {
+    @Override
+    public void deleteById(Long id) {  // Implement method from interface
         employeeRepository.deleteById(id);
     }
 }

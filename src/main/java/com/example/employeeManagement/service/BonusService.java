@@ -4,6 +4,7 @@ import com.example.employeeManagement.dto.BonusDTO;
 import com.example.employeeManagement.entity.Bonus;
 import com.example.employeeManagement.enums.BonusRate;
 import com.example.employeeManagement.repository.BonusRepository;
+import com.example.employeeManagement.service.interfaces.BonusServiceInterface;
 import com.example.employeeManagement.service.serviceMapper.Mapper;  // Import Mapper from the same package
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,7 +15,7 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class BonusService {
+public class BonusService implements BonusServiceInterface {  // Implement the interface
 
     private final BonusRepository bonusRepository;
     private final Mapper mapper;  // Inject Mapper
@@ -24,28 +25,28 @@ public class BonusService {
         this.mapper = mapper;  // Initialize Mapper
     }
 
-    // Create
-    public BonusDTO save(BonusDTO dto) {
+    @Override
+    public BonusDTO save(BonusDTO dto) {  // Implement method from interface
         Bonus bonus = mapper.convertToEntity(dto);  // Use Mapper to convert DTO to Entity
         Bonus saved = bonusRepository.save(bonus);
         return mapper.convertToDTO(saved);  // Convert saved entity back to DTO
     }
 
-    // Read All
-    public List<BonusDTO> findAll() {
+    @Override
+    public List<BonusDTO> findAll() {  // Implement method from interface
         List<Bonus> bonuses = bonusRepository.findAll();
         return bonuses.stream()
                 .map(mapper::convertToDTO)  // Use Mapper for each entity to DTO conversion
                 .toList();
     }
 
-    // Read One
-    public Optional<BonusDTO> findById(Long id) {
+    @Override
+    public Optional<BonusDTO> findById(Long id) {  // Implement method from interface
         return bonusRepository.findById(id).map(mapper::convertToDTO);  // Use Mapper for conversion
     }
 
-    // Update
-    public BonusDTO update(Long id, BonusDTO dto) {
+    @Override
+    public BonusDTO update(Long id, BonusDTO dto) {  // Implement method from interface
         Bonus existing = bonusRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Bonus not found"));
         existing.setAmount(dto.getAmount());
@@ -56,13 +57,13 @@ public class BonusService {
         return mapper.convertToDTO(saved);  // Use Mapper to convert the updated entity to DTO
     }
 
-    // Delete
-    public void deleteById(Long id) {
+    @Override
+    public void deleteById(Long id) {  // Implement method from interface
         bonusRepository.deleteById(id);
     }
 
-    // Custom method to calculate the bonus
-    public Double calculateBonus(Double salary, String season) {
+    @Override
+    public Double calculateBonus(Double salary, String season) {  // Implement custom method from interface
         // Get the rate from the enum using the season
         Double rate = BonusRate.getRateBySeason(season);
         // Calculate and return the bonus

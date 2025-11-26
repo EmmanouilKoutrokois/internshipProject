@@ -3,6 +3,7 @@ package com.example.employeeManagement.service;
 import com.example.employeeManagement.dto.CompanyDTO;
 import com.example.employeeManagement.entity.Company;
 import com.example.employeeManagement.repository.CompanyRepository;
+import com.example.employeeManagement.service.interfaces.CompanyServiceInterface;
 import com.example.employeeManagement.service.serviceMapper.Mapper;  // Import the Mapper class
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,7 +13,7 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class CompanyService {
+public class CompanyService implements CompanyServiceInterface {  // Implement the interface
 
     private final CompanyRepository companyRepository;
     private final Mapper mapper;
@@ -22,22 +23,26 @@ public class CompanyService {
         this.mapper = mapper;
     }
 
-    public CompanyDTO save(CompanyDTO dto) {
+    @Override
+    public CompanyDTO save(CompanyDTO dto) {  // Implement method from interface
         Company company = mapper.convertToEntity(dto);
         Company saved = companyRepository.save(company);
         return mapper.convertToDTO(saved);
     }
 
-    public List<CompanyDTO> findAll() {
+    @Override
+    public List<CompanyDTO> findAll() {  // Implement method from interface
         List<Company> companies = companyRepository.findAll();
         return companies.stream().map(mapper::convertToDTO).toList();
     }
 
-    public Optional<CompanyDTO> findById(Long id) {
+    @Override
+    public Optional<CompanyDTO> findById(Long id) {  // Implement method from interface
         return companyRepository.findById(id).map(mapper::convertToDTO);
     }
 
-    public CompanyDTO update(Long id, CompanyDTO dto) {
+    @Override
+    public CompanyDTO update(Long id, CompanyDTO dto) {  // Implement method from interface
         Company existing = companyRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Company not found"));
         existing.setName(dto.getName());
@@ -46,7 +51,8 @@ public class CompanyService {
         return mapper.convertToDTO(saved);
     }
 
-    public void deleteById(Long id) {
+    @Override
+    public void deleteById(Long id) {  // Implement method from interface
         companyRepository.deleteById(id);
     }
 }
