@@ -1,7 +1,7 @@
 package com.example.employeeManagement.controller;
 
 import com.example.employeeManagement.dto.BonusDTO;
-import com.example.employeeManagement.service.BonusService;
+import com.example.employeeManagement.service.BonusServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,9 +21,9 @@ import java.util.List;
 public class BonusController {
 
     @Autowired
-    private final BonusService bonusService;
+    private final BonusServiceImpl bonusService;
 
-    public BonusController(BonusService bonusService) {
+    public BonusController(BonusServiceImpl bonusService) {
         this.bonusService = bonusService;
     }
 

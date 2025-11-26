@@ -13,12 +13,12 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class EmployeeService implements EmployeeServiceInterface {  // Implement the interface
+public class EmployeeServiceImpl implements EmployeeServiceInterface {  // Implement the interface
 
     private final EmployeeRepository employeeRepository;
     private final Mapper mapper;
 
-    public EmployeeService(EmployeeRepository employeeRepository, Mapper mapper) {
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository, Mapper mapper) {
         this.employeeRepository = employeeRepository;
         this.mapper = mapper;
     }

@@ -1,7 +1,7 @@
 package com.example.employeeManagement.controller;
 
 import com.example.employeeManagement.dto.ProductDTO;
-import com.example.employeeManagement.service.ProductService;
+import com.example.employeeManagement.service.ProductServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,30 +18,30 @@ import java.util.List;
 @RequestMapping("/products")
 public class ProductController {
 
-    private final ProductService productService;
+    private final ProductServiceImpl productServiceImpl;
 
-    public ProductController(ProductService productService) {
-        this.productService = productService;
+    public ProductController(ProductServiceImpl productServiceImpl) {
+        this.productServiceImpl = productServiceImpl;
     }
 
     // Create
     @PostMapping
     public ResponseEntity<ProductDTO> createProduct(@RequestBody ProductDTO dto) {
-        ProductDTO saved = productService.save(dto);
+        ProductDTO saved = productServiceImpl.save(dto);
         return ResponseEntity.ok(saved);
     }
 
     // Read All
     @GetMapping
     public ResponseEntity<List<ProductDTO>> getAllProducts() {
-        List<ProductDTO> products = productService.findAll();
+        List<ProductDTO> products = productServiceImpl.findAll();
         return ResponseEntity.ok(products);
     }
 
     // Read One
     @GetMapping("/{id}")
     public ResponseEntity<ProductDTO> getProductById(@PathVariable Long id) {
-        return productService.findById(id)
+        return productServiceImpl.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -49,14 +49,14 @@ public class ProductController {
     // Update
     @PutMapping("/{id}")
     public ResponseEntity<ProductDTO> updateProduct(@PathVariable Long id, @RequestBody ProductDTO dto) {
-        ProductDTO updated = productService.update(id, dto);
+        ProductDTO updated = productServiceImpl.update(id, dto);
         return ResponseEntity.ok(updated);
     }
 
     // Delete
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
-        productService.deleteById(id);
+        productServiceImpl.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 }

@@ -15,12 +15,12 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class BonusService implements BonusServiceInterface {  // Implement the interface
+public class BonusServiceImpl implements BonusServiceInterface {  // Implement the interface
 
     private final BonusRepository bonusRepository;
     private final Mapper mapper;  // Inject Mapper
 
-    public BonusService(BonusRepository bonusRepository, Mapper mapper) {
+    public BonusServiceImpl(BonusRepository bonusRepository, Mapper mapper) {
         this.bonusRepository = bonusRepository;
         this.mapper = mapper;  // Initialize Mapper
     }

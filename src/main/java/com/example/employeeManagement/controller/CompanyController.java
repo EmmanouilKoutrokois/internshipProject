@@ -1,7 +1,7 @@
 package com.example.employeeManagement.controller;
 
 import com.example.employeeManagement.dto.CompanyDTO;
-import com.example.employeeManagement.service.CompanyService;
+import com.example.employeeManagement.service.CompanyServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,30 +19,30 @@ import java.util.Optional;
 @RequestMapping("/api/companies")
 public class CompanyController {
 
-    private final CompanyService companyService;
+    private final CompanyServiceImpl companyServiceImpl;
 
-    public CompanyController(CompanyService companyService) {
-        this.companyService = companyService;
+    public CompanyController(CompanyServiceImpl companyServiceImpl) {
+        this.companyServiceImpl = companyServiceImpl;
     }
 
     @GetMapping
     public List<CompanyDTO> getAllCompanies() {
-        return companyService.findAll();
+        return companyServiceImpl.findAll();
     }
 
     @GetMapping("/{id}")
     public Optional<CompanyDTO> getCompanyById(@PathVariable Long id) {
-        return companyService.findById(id);
+        return companyServiceImpl.findById(id);
     }
 
     @PostMapping
     public ResponseEntity<CompanyDTO> createCompany(@RequestBody CompanyDTO companyDTO) {
-        CompanyDTO savedCompany = companyService.save(companyDTO);  // Service method expects a CompanyDTO
+        CompanyDTO savedCompany = companyServiceImpl.save(companyDTO);  // Service method expects a CompanyDTO
         return ResponseEntity.status(HttpStatus.CREATED).body(savedCompany);  // Return the saved DTO
     }
 
     @DeleteMapping("/{id}")
     public void deleteCompany(@PathVariable Long id) {
-        companyService.deleteById(id);
+        companyServiceImpl.deleteById(id);
     }
 }

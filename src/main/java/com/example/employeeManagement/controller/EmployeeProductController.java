@@ -1,7 +1,7 @@
 package com.example.employeeManagement.controller;
 
 import com.example.employeeManagement.dto.EmployeeProductDTO;
-import com.example.employeeManagement.service.EmployeeProductService;
+import com.example.employeeManagement.service.EmployeeProductServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,30 +18,30 @@ import java.util.List;
 @RequestMapping("/employeeProducts")
 public class EmployeeProductController {
 
-    private final EmployeeProductService employeeProductService;
+    private final EmployeeProductServiceImpl employeeProductServiceImpl;
 
-    public EmployeeProductController(EmployeeProductService employeeProductService) {
-        this.employeeProductService = employeeProductService;
+    public EmployeeProductController(EmployeeProductServiceImpl employeeProductServiceImpl) {
+        this.employeeProductServiceImpl = employeeProductServiceImpl;
     }
 
     // Create
     @PostMapping
     public ResponseEntity<EmployeeProductDTO> createEmployeeProduct(@RequestBody EmployeeProductDTO dto) {
-        EmployeeProductDTO saved = employeeProductService.save(dto);
+        EmployeeProductDTO saved = employeeProductServiceImpl.save(dto);
         return ResponseEntity.ok(saved);
     }
 
     // Read All
     @GetMapping
     public ResponseEntity<List<EmployeeProductDTO>> getAllEmployeeProducts() {
-        List<EmployeeProductDTO> employeeProducts = employeeProductService.findAll();
+        List<EmployeeProductDTO> employeeProducts = employeeProductServiceImpl.findAll();
         return ResponseEntity.ok(employeeProducts);
     }
 
     // Read One
     @GetMapping("/{id}")
     public ResponseEntity<EmployeeProductDTO> getEmployeeProductById(@PathVariable Long id) {
-        return employeeProductService.findById(id)
+        return employeeProductServiceImpl.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -49,14 +49,14 @@ public class EmployeeProductController {
     // Update
     @PutMapping("/{id}")
     public ResponseEntity<EmployeeProductDTO> updateEmployeeProduct(@PathVariable Long id, @RequestBody EmployeeProductDTO dto) {
-        EmployeeProductDTO updated = employeeProductService.update(id, dto);
+        EmployeeProductDTO updated = employeeProductServiceImpl.update(id, dto);
         return ResponseEntity.ok(updated);
     }
 
     // Delete
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteEmployeeProduct(@PathVariable Long id) {
-        employeeProductService.deleteById(id);
+        employeeProductServiceImpl.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 }

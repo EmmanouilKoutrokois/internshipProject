@@ -13,12 +13,12 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class VacationRequestService implements VacationRequestServiceInterface {  // Implement the interface
+public class VacationRequestServiceImpl implements VacationRequestServiceInterface {  // Implement the interface
 
     private final VacationRequestRepository vacationRequestRepository;
     private final Mapper mapper;
 
-    public VacationRequestService(VacationRequestRepository vacationRequestRepository, Mapper mapper) {
+    public VacationRequestServiceImpl(VacationRequestRepository vacationRequestRepository, Mapper mapper) {
         this.vacationRequestRepository = vacationRequestRepository;
         this.mapper = mapper;
     }
