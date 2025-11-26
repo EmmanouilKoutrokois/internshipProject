@@ -1,7 +1,6 @@
 package com.example.employeeManagement.controller;
 
 import com.example.employeeManagement.dto.EmployeeDTO;
-import com.example.employeeManagement.entity.Employee;
 import com.example.employeeManagement.service.EmployeeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -41,7 +40,7 @@ public class EmployeeController {
 
     // Read One
     @GetMapping("/{id}")
-    public ResponseEntity<Employee> getEmployeeById(@PathVariable Long id) {
+    public ResponseEntity<EmployeeDTO> getEmployeeById(@PathVariable Long id) {
         return employeeService.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
