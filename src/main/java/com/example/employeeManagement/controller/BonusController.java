@@ -1,7 +1,7 @@
 package com.example.employeeManagement.controller;
 
 import com.example.employeeManagement.dto.BonusDTO;
-import com.example.employeeManagement.service.BonusServiceImpl;
+import com.example.employeeManagement.service.impl.BonusServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;

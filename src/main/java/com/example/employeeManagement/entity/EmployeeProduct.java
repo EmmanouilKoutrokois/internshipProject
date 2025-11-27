@@ -29,11 +29,11 @@ public class EmployeeProduct {
 
     @ManyToOne
     @JoinColumn(name = "employee_id")
-    private Employee employeeId;
+    private Employee employee;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
-    private Product productId;
+    private Product product;
 
     private Integer quantity;
 

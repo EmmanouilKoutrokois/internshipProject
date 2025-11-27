@@ -1,11 +1,11 @@
-package com.example.employeeManagement.service.interfaces;
+package com.example.employeeManagement.service;
 
 import com.example.employeeManagement.dto.CompanyDTO;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface CompanyServiceInterface {
+public interface CompanyService {
 
     CompanyDTO save(CompanyDTO dto);
 

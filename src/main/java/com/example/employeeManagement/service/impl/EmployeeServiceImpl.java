@@ -1,10 +1,10 @@
-package com.example.employeeManagement.service;
+package com.example.employeeManagement.service.impl;
 
 import com.example.employeeManagement.dto.EmployeeDTO;
 import com.example.employeeManagement.entity.Employee;
 import com.example.employeeManagement.repository.EmployeeRepository;
-import com.example.employeeManagement.service.interfaces.EmployeeServiceInterface;
-import com.example.employeeManagement.service.serviceMapper.Mapper;  // Import the Mapper class
+import com.example.employeeManagement.service.EmployeeService;
+import com.example.employeeManagement.service.mapper.MappingHelpingService;  // Import the Mapper class
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,32 +13,32 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class EmployeeServiceImpl implements EmployeeServiceInterface {  // Implement the interface
+public class EmployeeServiceImpl implements EmployeeService {  // Implement the interface
 
     private final EmployeeRepository employeeRepository;
-    private final Mapper mapper;
+    private final MappingHelpingService mappingHelpingService;
 
-    public EmployeeServiceImpl(EmployeeRepository employeeRepository, Mapper mapper) {
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository, MappingHelpingService mappingHelpingService) {
         this.employeeRepository = employeeRepository;
-        this.mapper = mapper;
+        this.mappingHelpingService = mappingHelpingService;
     }
 
     @Override
     public EmployeeDTO save(EmployeeDTO dto) {  // Implement method from interface
-        Employee employee = mapper.convertToEntity(dto);
+        Employee employee = mappingHelpingService.convertToEntity(dto);
         Employee saved = employeeRepository.save(employee);
-        return mapper.convertToDTO(saved);
+        return mappingHelpingService.convertToDTO(saved);
     }
 
     @Override
     public List<EmployeeDTO> findAll() {  // Implement method from interface
         List<Employee> employees = employeeRepository.findAll();
-        return employees.stream().map(mapper::convertToDTO).toList();
+        return employees.stream().map(mappingHelpingService::convertToDTO).toList();
     }
 
     @Override
     public Optional<EmployeeDTO> findById(Long id) {  // Implement method from interface
-        return employeeRepository.findById(id).map(mapper::convertToDTO);
+        return employeeRepository.findById(id).map(mappingHelpingService::convertToDTO);
     }
 
     @Override
@@ -48,7 +48,7 @@ public class EmployeeServiceImpl implements EmployeeServiceInterface {  // Imple
         existing.setId(dto.getId());
         existing.setSalary(dto.getSalary());
         Employee saved = employeeRepository.save(existing);
-        return mapper.convertToDTO(saved);
+        return mappingHelpingService.convertToDTO(saved);
     }
 
     @Override

@@ -1,10 +1,10 @@
-package com.example.employeeManagement.service;
+package com.example.employeeManagement.service.impl;
 
 import com.example.employeeManagement.dto.EmployeeProductDTO;
 import com.example.employeeManagement.entity.EmployeeProduct;
 import com.example.employeeManagement.repository.EmployeeProductRepository;
-import com.example.employeeManagement.service.interfaces.EmployeeProductServiceInterface;
-import com.example.employeeManagement.service.serviceMapper.Mapper;  // Import the Mapper class
+import com.example.employeeManagement.service.EmployeeProductService;
+import com.example.employeeManagement.service.mapper.MappingHelpingService;  // Import the Mapper class
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,32 +13,32 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class EmployeeProductServiceImpl implements EmployeeProductServiceInterface {  // Implement the interface
+public class EmployeeProductServiceImpl implements EmployeeProductService {  // Implement the interface
 
     private final EmployeeProductRepository employeeProductRepository;
-    private final Mapper mapper;
+    private final MappingHelpingService mappingHelpingService;
 
-    public EmployeeProductServiceImpl(EmployeeProductRepository employeeProductRepository, Mapper mapper) {
+    public EmployeeProductServiceImpl(EmployeeProductRepository employeeProductRepository, MappingHelpingService mappingHelpingService) {
         this.employeeProductRepository = employeeProductRepository;
-        this.mapper = mapper;
+        this.mappingHelpingService = mappingHelpingService;
     }
 
     @Override
     public EmployeeProductDTO save(EmployeeProductDTO dto) {  // Implement method from interface
-        EmployeeProduct employeeProduct = mapper.convertToEntity(dto);
+        EmployeeProduct employeeProduct = mappingHelpingService.convertToEntity(dto);
         EmployeeProduct saved = employeeProductRepository.save(employeeProduct);
-        return mapper.convertToDTO(saved);
+        return mappingHelpingService.convertToDTO(saved);
     }
 
     @Override
     public List<EmployeeProductDTO> findAll() {  // Implement method from interface
         List<EmployeeProduct> employeeProducts = employeeProductRepository.findAll();
-        return employeeProducts.stream().map(mapper::convertToDTO).toList();
+        return employeeProducts.stream().map(mappingHelpingService::convertToDTO).toList();
     }
 
     @Override
     public Optional<EmployeeProductDTO> findById(Long id) {  // Implement method from interface
-        return employeeProductRepository.findById(id).map(mapper::convertToDTO);
+        return employeeProductRepository.findById(id).map(mappingHelpingService::convertToDTO);
     }
 
     @Override
@@ -48,7 +48,7 @@ public class EmployeeProductServiceImpl implements EmployeeProductServiceInterfa
         existing.setEmployeeId(dto.getEmployeeId());
         existing.setProductId(dto.getProductId());
         EmployeeProduct saved = employeeProductRepository.save(existing);
-        return mapper.convertToDTO(saved);
+        return mappingHelpingService.convertToDTO(saved);
     }
 
     @Override

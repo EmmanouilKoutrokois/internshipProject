@@ -40,7 +40,7 @@ public class VacationRequest {
 
     @ManyToOne
     @JoinColumn(name = "employee_id")
-    private Employee employeeId;
+    private Employee employee;
 
     @Override
     public final boolean equals(Object o) {

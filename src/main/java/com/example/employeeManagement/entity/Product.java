@@ -34,7 +34,7 @@ public class Product {
     @Column(name = "description", nullable = true, length = 500)
     private String description;
 
-    @Column(name = "price", nullable = false, precision = 10, scale = 2)
+    @Column(name = "price", precision = 10)
     private Double price;
 
     @OneToMany(mappedBy = "product")

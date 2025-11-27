@@ -1,10 +1,10 @@
-package com.example.employeeManagement.service;
+package com.example.employeeManagement.service.impl;
 
 import com.example.employeeManagement.dto.CompanyDTO;
 import com.example.employeeManagement.entity.Company;
 import com.example.employeeManagement.repository.CompanyRepository;
-import com.example.employeeManagement.service.interfaces.CompanyServiceInterface;
-import com.example.employeeManagement.service.serviceMapper.Mapper;  // Import the Mapper class
+import com.example.employeeManagement.service.CompanyService;
+import com.example.employeeManagement.service.mapper.MappingHelpingService;  // Import the Mapper class
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,32 +13,32 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class CompanyServiceImpl implements CompanyServiceInterface {  // Implement the interface
+public class CompanyServiceImpl implements CompanyService {  // Implement the interface
 
     private final CompanyRepository companyRepository;
-    private final Mapper mapper;
+    private final MappingHelpingService mappingHelpingService;
 
-    public CompanyServiceImpl(CompanyRepository companyRepository, Mapper mapper) {
+    public CompanyServiceImpl(CompanyRepository companyRepository, MappingHelpingService mappingHelpingService) {
         this.companyRepository = companyRepository;
-        this.mapper = mapper;
+        this.mappingHelpingService = mappingHelpingService;
     }
 
     @Override
     public CompanyDTO save(CompanyDTO dto) {  // Implement method from interface
-        Company company = mapper.convertToEntity(dto);
+        Company company = mappingHelpingService.convertToEntity(dto);
         Company saved = companyRepository.save(company);
-        return mapper.convertToDTO(saved);
+        return mappingHelpingService.convertToDTO(saved);
     }
 
     @Override
     public List<CompanyDTO> findAll() {  // Implement method from interface
         List<Company> companies = companyRepository.findAll();
-        return companies.stream().map(mapper::convertToDTO).toList();
+        return companies.stream().map(mappingHelpingService::convertToDTO).toList();
     }
 
     @Override
     public Optional<CompanyDTO> findById(Long id) {  // Implement method from interface
-        return companyRepository.findById(id).map(mapper::convertToDTO);
+        return companyRepository.findById(id).map(mappingHelpingService::convertToDTO);
     }
 
     @Override
@@ -48,7 +48,7 @@ public class CompanyServiceImpl implements CompanyServiceInterface {  // Impleme
         existing.setName(dto.getName());
         existing.setEmail(dto.getEmail());
         Company saved = companyRepository.save(existing);
-        return mapper.convertToDTO(saved);
+        return mappingHelpingService.convertToDTO(saved);
     }
 
     @Override

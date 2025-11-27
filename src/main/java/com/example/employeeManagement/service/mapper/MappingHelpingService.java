@@ -1,4 +1,4 @@
-package com.example.employeeManagement.service.serviceMapper;
+package com.example.employeeManagement.service.mapper;
 
 import com.example.employeeManagement.dto.BonusDTO;
 import com.example.employeeManagement.dto.CompanyDTO;
@@ -17,11 +17,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Mapper {
+public class MappingHelpingService {
 
     private final ModelMapper modelMapper;
 
-    public Mapper(ModelMapper modelMapper) {
+    public MappingHelpingService(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
     }
 

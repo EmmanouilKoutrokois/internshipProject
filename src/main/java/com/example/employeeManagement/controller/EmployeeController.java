@@ -1,7 +1,7 @@
 package com.example.employeeManagement.controller;
 
 import com.example.employeeManagement.dto.EmployeeDTO;
-import com.example.employeeManagement.service.EmployeeServiceImpl;
+import com.example.employeeManagement.service.impl.EmployeeServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;

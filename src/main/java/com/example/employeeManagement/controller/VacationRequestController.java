@@ -1,7 +1,7 @@
 package com.example.employeeManagement.controller;
 
 import com.example.employeeManagement.dto.VacationRequestDTO;
-import com.example.employeeManagement.service.VacationRequestServiceImpl;
+import com.example.employeeManagement.service.impl.VacationRequestServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;

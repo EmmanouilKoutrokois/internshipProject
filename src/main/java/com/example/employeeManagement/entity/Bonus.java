@@ -29,13 +29,13 @@ public class Bonus {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "amount", nullable = false, precision = 10, scale = 2)
+    @Column(name = "amount", nullable = false, precision = 10)
     private Double amount;
 
-    @Column(name = "date_granted", nullable = false)
+    @Column(name = "date_granted")
     private LocalDate dateGranted;
 
-    @Column(name = "employee_id", nullable = false)
+    @Column(name = "employee_id", nullable = false, insertable=false, updatable=false)
     private Long employeeId;
 
     @ManyToOne

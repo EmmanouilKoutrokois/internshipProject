@@ -1,11 +1,11 @@
-package com.example.employeeManagement.service.interfaces;
+package com.example.employeeManagement.service;
 
 import com.example.employeeManagement.dto.BonusDTO;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface BonusServiceInterface {
+public interface BonusService {
 
     BonusDTO save(BonusDTO dto);
 

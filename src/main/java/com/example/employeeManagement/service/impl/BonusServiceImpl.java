@@ -1,11 +1,11 @@
-package com.example.employeeManagement.service;
+package com.example.employeeManagement.service.impl;
 
 import com.example.employeeManagement.dto.BonusDTO;
 import com.example.employeeManagement.entity.Bonus;
 import com.example.employeeManagement.enums.BonusRate;
 import com.example.employeeManagement.repository.BonusRepository;
-import com.example.employeeManagement.service.interfaces.BonusServiceInterface;
-import com.example.employeeManagement.service.serviceMapper.Mapper;  // Import Mapper from the same package
+import com.example.employeeManagement.service.BonusService;
+import com.example.employeeManagement.service.mapper.MappingHelpingService;  // Import Mapper from the same package
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,34 +15,34 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class BonusServiceImpl implements BonusServiceInterface {  // Implement the interface
+public class BonusServiceImpl implements BonusService {  // Implement the interface
 
     private final BonusRepository bonusRepository;
-    private final Mapper mapper;  // Inject Mapper
+    private final MappingHelpingService mappingHelpingService;  // Inject Mapper
 
-    public BonusServiceImpl(BonusRepository bonusRepository, Mapper mapper) {
+    public BonusServiceImpl(BonusRepository bonusRepository, MappingHelpingService mappingHelpingService) {
         this.bonusRepository = bonusRepository;
-        this.mapper = mapper;  // Initialize Mapper
+        this.mappingHelpingService = mappingHelpingService;  // Initialize Mapper
     }
 
     @Override
     public BonusDTO save(BonusDTO dto) {  // Implement method from interface
-        Bonus bonus = mapper.convertToEntity(dto);  // Use Mapper to convert DTO to Entity
+        Bonus bonus = mappingHelpingService.convertToEntity(dto);  // Use Mapper to convert DTO to Entity
         Bonus saved = bonusRepository.save(bonus);
-        return mapper.convertToDTO(saved);  // Convert saved entity back to DTO
+        return mappingHelpingService.convertToDTO(saved);  // Convert saved entity back to DTO
     }
 
     @Override
     public List<BonusDTO> findAll() {  // Implement method from interface
         List<Bonus> bonuses = bonusRepository.findAll();
         return bonuses.stream()
-                .map(mapper::convertToDTO)  // Use Mapper for each entity to DTO conversion
+                .map(mappingHelpingService::convertToDTO)  // Use Mapper for each entity to DTO conversion
                 .toList();
     }
 
     @Override
     public Optional<BonusDTO> findById(Long id) {  // Implement method from interface
-        return bonusRepository.findById(id).map(mapper::convertToDTO);  // Use Mapper for conversion
+        return bonusRepository.findById(id).map(mappingHelpingService::convertToDTO);  // Use Mapper for conversion
     }
 
     @Override
@@ -54,7 +54,7 @@ public class BonusServiceImpl implements BonusServiceInterface {  // Implement t
         existing.setEmployeeId(dto.getEmployeeId());
         existing.setId(dto.getId());
         Bonus saved = bonusRepository.save(existing);
-        return mapper.convertToDTO(saved);  // Use Mapper to convert the updated entity to DTO
+        return mappingHelpingService.convertToDTO(saved);  // Use Mapper to convert the updated entity to DTO
     }
 
     @Override
