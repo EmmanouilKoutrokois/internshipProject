@@ -42,14 +42,20 @@ public class EmployeeServiceImpl implements EmployeeService {  // Implement the 
     }
 
     @Override
-    public EmployeeDTO update(Long id, EmployeeDTO dto) {  // Implement method from interface
+    public EmployeeDTO update(Long id, EmployeeDTO dto) {
         Employee existing = employeeRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Employee not found"));
-        existing.setId(dto.getId());
-        existing.setSalary(dto.getSalary());
+
+        if (dto.getFirstName() != null) existing.setFirstName(dto.getFirstName());
+        if (dto.getLastName() != null) existing.setLastName(dto.getLastName());
+        if (dto.getEmail() != null) existing.setEmail(dto.getEmail());
+        if (dto.getSalary() != null) existing.setSalary(dto.getSalary());
+
         Employee saved = employeeRepository.save(existing);
         return mappingHelpingService.convertToDTO(saved);
     }
+
+
 
     @Override
     public void deleteById(Long id) {  // Implement method from interface
