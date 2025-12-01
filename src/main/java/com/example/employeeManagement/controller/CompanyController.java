@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/companies")
+@RequestMapping("/companies")
 public class CompanyController {
 
     private final CompanyServiceImpl companyServiceImpl;
