@@ -37,7 +37,7 @@ public class Bonus {
 
     @ManyToOne
     @JoinColumn(name = "employee_id", nullable = false)
-    private Employee employeeId;
+    private Employee employee;
 
     @Override
     public final boolean equals(Object o) {
