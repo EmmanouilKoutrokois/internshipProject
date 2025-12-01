@@ -35,11 +35,8 @@ public class Bonus {
     @Column(name = "date_granted")
     private LocalDate dateGranted;
 
-    @Column(name = "employee_id", nullable = false, insertable=false, updatable=false)
-    private Long employeeId;
-
     @ManyToOne
-    @JoinColumn(name = "employee_id")
+    @JoinColumn(name = "employee_id", nullable = false)
     private Employee employee;
 
     @Override

@@ -44,11 +44,13 @@ public class BonusController {
     // Read One
     @GetMapping("/{id}")
     public ResponseEntity<BonusDTO> getBonusById(@PathVariable Long id) {
-        return bonusService.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        BonusDTO dto = bonusService.findById(id); // returns BonusDTO, not Optional
+        if (dto != null) {
+            return ResponseEntity.ok(dto);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
-
     // Update
     @PutMapping("/{id}")
     public ResponseEntity<BonusDTO> updateBonus(@PathVariable Long id, @RequestBody BonusDTO dto) {
@@ -63,7 +65,10 @@ public class BonusController {
         return ResponseEntity.noContent().build();
     }
     @GetMapping("/calculate-bonus")
-    public Double calculateBonus(@RequestParam Double salary, @RequestParam String season) {
-        return bonusService.calculateBonus(salary, season);
+    public ResponseEntity<Double> calculateBonus(
+            @RequestParam Double salary,
+            @RequestParam String season) {
+        Double result = bonusService.calculateBonus(salary, season);
+        return ResponseEntity.ok(result);
     }
 }

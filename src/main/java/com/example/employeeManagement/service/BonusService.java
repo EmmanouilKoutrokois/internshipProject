@@ -17,5 +17,5 @@ public interface BonusService {
 
     void deleteById(Long id);
 
-    Double calculateBonus(Double salary, String season);  // Custom method
+    Double calculateBonus(Double salary, String season);
 }
