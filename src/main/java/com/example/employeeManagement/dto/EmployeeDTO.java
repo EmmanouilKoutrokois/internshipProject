@@ -10,4 +10,5 @@ public class EmployeeDTO {
     private String email;
     private Double salary;
     private String position;
+    private Long companyId;  // send company ID from Postman
 }

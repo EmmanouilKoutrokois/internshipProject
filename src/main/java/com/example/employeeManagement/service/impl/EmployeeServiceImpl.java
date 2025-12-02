@@ -1,10 +1,12 @@
 package com.example.employeeManagement.service.impl;
 
 import com.example.employeeManagement.dto.EmployeeDTO;
+import com.example.employeeManagement.entity.Company;
 import com.example.employeeManagement.entity.Employee;
 import com.example.employeeManagement.repository.EmployeeRepository;
+import com.example.employeeManagement.service.CompanyService;
 import com.example.employeeManagement.service.EmployeeService;
-import com.example.employeeManagement.service.mapper.MappingHelpingService;  // Import the Mapper class
+import com.example.employeeManagement.service.mapper.MappingHelpingService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,32 +15,46 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class EmployeeServiceImpl implements EmployeeService {  // Implement the interface
+public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepository employeeRepository;
     private final MappingHelpingService mappingHelpingService;
+    private final CompanyService companyService;
 
-    public EmployeeServiceImpl(EmployeeRepository employeeRepository, MappingHelpingService mappingHelpingService) {
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository,
+                               MappingHelpingService mappingHelpingService,
+                               CompanyService companyService) {
         this.employeeRepository = employeeRepository;
         this.mappingHelpingService = mappingHelpingService;
+        this.companyService = companyService;
     }
 
     @Override
-    public EmployeeDTO save(EmployeeDTO dto) {  // Implement method from interface
+    public EmployeeDTO save(EmployeeDTO dto) {
         Employee employee = mappingHelpingService.convertToEntity(dto);
+
+        if (dto.getCompanyId() != null) {
+            Company company = companyService.findEntityById(dto.getCompanyId());
+            employee.setCompany(company);
+        } else {
+            throw new RuntimeException("Company ID is required");
+        }
+
         Employee saved = employeeRepository.save(employee);
         return mappingHelpingService.convertToDTO(saved);
     }
 
     @Override
-    public List<EmployeeDTO> findAll() {  // Implement method from interface
-        List<Employee> employees = employeeRepository.findAll();
-        return employees.stream().map(mappingHelpingService::convertToDTO).toList();
+    public List<EmployeeDTO> findAll() {
+        return employeeRepository.findAll().stream()
+                .map(mappingHelpingService::convertToDTO)
+                .toList();
     }
 
     @Override
-    public Optional<EmployeeDTO> findById(Long id) {  // Implement method from interface
-        return employeeRepository.findById(id).map(mappingHelpingService::convertToDTO);
+    public Optional<EmployeeDTO> findById(Long id) {
+        return employeeRepository.findById(id)
+                .map(mappingHelpingService::convertToDTO);
     }
 
     @Override
@@ -50,15 +66,17 @@ public class EmployeeServiceImpl implements EmployeeService {  // Implement the 
         if (dto.getLastName() != null) existing.setLastName(dto.getLastName());
         if (dto.getEmail() != null) existing.setEmail(dto.getEmail());
         if (dto.getSalary() != null) existing.setSalary(dto.getSalary());
+        if (dto.getPosition() != null) existing.setPosition(dto.getPosition());
+        if (dto.getCompanyId() != null) {
+            existing.setCompany(companyService.findEntityById(dto.getCompanyId()));
+        }
 
         Employee saved = employeeRepository.save(existing);
         return mappingHelpingService.convertToDTO(saved);
     }
 
-
-
     @Override
-    public void deleteById(Long id) {  // Implement method from interface
+    public void deleteById(Long id) {
         employeeRepository.deleteById(id);
     }
 }

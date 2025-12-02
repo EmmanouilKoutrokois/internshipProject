@@ -1,4 +1,4 @@
-package com.example.employeeManagement.exception;  // Ensure it’s in the correct package
+package com.example.employeeManagement.exceptions;  // Ensure it’s in the correct package
 
 class CompanyNotFoundException extends RuntimeException {
 
@@ -7,3 +7,4 @@ class CompanyNotFoundException extends RuntimeException {
         super("Company with ID " + id + " not found.");
     }
 }
+
