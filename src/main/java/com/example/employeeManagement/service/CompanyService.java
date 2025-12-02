@@ -1,7 +1,6 @@
 package com.example.employeeManagement.service;
 
 import com.example.employeeManagement.dto.CompanyDTO;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -16,4 +15,7 @@ public interface CompanyService {
     CompanyDTO update(Long id, CompanyDTO dto);
 
     void deleteById(Long id);
+
+    // ⭐ NEW METHOD
+    Double getTotalSalaryForCompany(Long companyId);
 }

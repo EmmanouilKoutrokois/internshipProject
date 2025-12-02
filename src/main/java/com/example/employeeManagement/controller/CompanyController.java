@@ -4,13 +4,7 @@ import com.example.employeeManagement.dto.CompanyDTO;
 import com.example.employeeManagement.service.impl.CompanyServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -37,12 +31,18 @@ public class CompanyController {
 
     @PostMapping
     public ResponseEntity<CompanyDTO> createCompany(@RequestBody CompanyDTO companyDTO) {
-        CompanyDTO savedCompany = companyServiceImpl.save(companyDTO);  // Service method expects a CompanyDTO
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedCompany);  // Return the saved DTO
+        CompanyDTO savedCompany = companyServiceImpl.save(companyDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedCompany);
     }
 
     @DeleteMapping("/{id}")
     public void deleteCompany(@PathVariable Long id) {
         companyServiceImpl.deleteById(id);
+    }
+
+    // ⭐ NEW ENDPOINT
+    @GetMapping("/{companyId}/total-salary")
+    public Double getTotalSalary(@PathVariable Long companyId) {
+        return companyServiceImpl.getTotalSalaryForCompany(companyId);
     }
 }
