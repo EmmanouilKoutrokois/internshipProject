@@ -9,4 +9,5 @@ public class CompanyDTO {
     private String address;
     private String phoneNumber;
     private String email;
+    private Double totalSalary;
 }

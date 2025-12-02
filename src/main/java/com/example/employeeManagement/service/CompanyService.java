@@ -1,6 +1,8 @@
 package com.example.employeeManagement.service;
 
 import com.example.employeeManagement.dto.CompanyDTO;
+import com.example.employeeManagement.entity.Company;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -16,6 +18,8 @@ public interface CompanyService {
 
     void deleteById(Long id);
 
-    // ⭐ NEW METHOD
+    // NEW: total salary calculation
     Double getTotalSalaryForCompany(Long companyId);
+
+    Company findEntityById(Long companyId);
 }
