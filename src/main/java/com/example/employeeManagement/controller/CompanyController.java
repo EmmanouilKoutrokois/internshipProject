@@ -1,7 +1,10 @@
 package com.example.employeeManagement.controller;
 
 import com.example.employeeManagement.dto.CompanyDTO;
+import com.example.employeeManagement.entity.Bonus;
+import com.example.employeeManagement.service.impl.BonusServiceImpl;
 import com.example.employeeManagement.service.impl.CompanyServiceImpl;
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,10 +16,13 @@ import java.util.Optional;
 @RequestMapping("/companies")
 public class CompanyController {
 
+    @Getter
+    private final BonusServiceImpl bonusServiceImpl;
     private final CompanyServiceImpl companyServiceImpl;
 
     public CompanyController(CompanyServiceImpl companyServiceImpl) {
         this.companyServiceImpl = companyServiceImpl;
+        bonusServiceImpl = null;
     }
 
     @GetMapping
@@ -44,5 +50,13 @@ public class CompanyController {
     @GetMapping("/{companyId}/total-salary")
     public Double getTotalSalary(@PathVariable Long companyId) {
         return companyServiceImpl.getTotalSalaryForCompany(companyId);
+    }
+    
+    @PostMapping("/{companyId}/bonuses")
+    public List<Bonus> createCompanyBonuses(
+            @PathVariable Long companyId,
+            @RequestParam String season) {
+
+        return BonusServiceImpl.createBonusesForCompany(companyId, season);
     }
 }
