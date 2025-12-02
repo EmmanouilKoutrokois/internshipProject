@@ -2,6 +2,7 @@ package com.example.employeeManagement.controller;
 
 import com.example.employeeManagement.dto.CompanyDTO;
 import com.example.employeeManagement.entity.Company;
+import com.example.employeeManagement.entity.Product;
 import com.example.employeeManagement.service.CompanyService;
 import com.example.employeeManagement.service.impl.BonusServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -69,4 +71,10 @@ public class CompanyController {
         var bonuses = BonusServiceImpl.createBonusesForCompany(companyId, season);
         return ResponseEntity.ok(bonuses);
     }
+    @GetMapping("/{companyId}/employee-products")
+    public ResponseEntity<Map<String, List<Product>>> getEmployeeProducts(@PathVariable Long companyId) {
+        Map<String, List<Product>> result = companyService.getEmployeeProducts(companyId);
+        return ResponseEntity.ok(result);
+    }
+
 }

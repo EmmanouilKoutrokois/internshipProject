@@ -3,6 +3,8 @@ package com.example.employeeManagement.service.impl;
 import com.example.employeeManagement.dto.CompanyDTO;
 import com.example.employeeManagement.entity.Company;
 import com.example.employeeManagement.entity.Employee;
+import com.example.employeeManagement.entity.EmployeeProduct;
+import com.example.employeeManagement.entity.Product;
 import com.example.employeeManagement.repository.CompanyRepository;
 import com.example.employeeManagement.repository.EmployeeRepository;
 import com.example.employeeManagement.service.CompanyService;
@@ -10,7 +12,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -21,31 +25,31 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public CompanyDTO save(CompanyDTO dto) {
-        // existing implementation
+        // your existing implementation
         return null;
     }
 
     @Override
     public List<CompanyDTO> findAll() {
-        // existing implementation
+        // your existing implementation
         return null;
     }
 
     @Override
     public Optional<CompanyDTO> findById(Long id) {
-        // existing implementation
+        // your existing implementation
         return Optional.empty();
     }
 
     @Override
     public CompanyDTO update(Long id, CompanyDTO dto) {
-        // existing implementation
+        // your existing implementation
         return null;
     }
 
     @Override
     public void deleteById(Long id) {
-        // existing implementation
+        // your existing implementation
     }
 
     @Override
@@ -58,9 +62,22 @@ public class CompanyServiceImpl implements CompanyService {
     public Double getTotalSalaryForCompany(Long companyId) {
         Company company = findEntityById(companyId);
 
-        // Use LAZY-loaded employees safely
         return company.getEmployees().stream()
                 .mapToDouble(emp -> emp.getSalary() != null ? emp.getSalary() : 0)
                 .sum();
+    }
+
+    @Override
+    public Map<String, List<Product>> getEmployeeProducts(Long companyId) {
+        Company company = findEntityById(companyId);
+
+        return company.getEmployees().stream()
+                .filter(emp -> emp.getEmployeeProducts() != null && !emp.getEmployeeProducts().isEmpty())
+                .collect(Collectors.toMap(
+                        emp -> emp.getFirstName() + " " + emp.getLastName(),
+                        emp -> emp.getEmployeeProducts().stream()
+                                .map(EmployeeProduct::getProduct)
+                                .collect(Collectors.toList())
+                ));
     }
 }

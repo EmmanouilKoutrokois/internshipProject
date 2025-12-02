@@ -2,8 +2,10 @@ package com.example.employeeManagement.service;
 
 import com.example.employeeManagement.dto.CompanyDTO;
 import com.example.employeeManagement.entity.Company;
+import com.example.employeeManagement.entity.Product;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface CompanyService {
@@ -22,4 +24,6 @@ public interface CompanyService {
     Double getTotalSalaryForCompany(Long companyId);
 
     Company findEntityById(Long companyId);
+
+    Map<String, List<Product>> getEmployeeProducts(Long companyId);
 }
