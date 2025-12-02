@@ -72,17 +72,13 @@ public class BonusServiceImpl {
 
     public static List<Bonus> createBonusesForCompany(Long companyId, String season) {
 
-        // 1. Get company
         Company company = companyRepository.findById(companyId)
                 .orElseThrow(() -> new RuntimeException("Company not found: " + companyId));
 
-        // 2. Fetch employees via LAZY list
         List<Employee> employees = company.getEmployees();
 
-        // 3. Determine bonus rate based on season
         Double rate = BonusRate.getRateBySeason(season);
 
-        // 4. Prepare Bonus objects
         List<Bonus> bonuses = new ArrayList<>();
 
         for (Employee employee : employees) {
@@ -94,7 +90,6 @@ public class BonusServiceImpl {
             bonuses.add(bonus);
         }
 
-        // 5. Mandatory saveAll
         return bonusRepository.saveAll(bonuses);
     }
 }

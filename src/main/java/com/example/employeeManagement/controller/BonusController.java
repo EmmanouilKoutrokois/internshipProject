@@ -64,6 +64,7 @@ public class BonusController {
         bonusService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+
     @GetMapping("/calculate-bonus")
     public ResponseEntity<Double> calculateBonus(
             @RequestParam Double salary,

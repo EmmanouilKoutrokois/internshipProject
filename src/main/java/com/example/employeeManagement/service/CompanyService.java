@@ -20,7 +20,6 @@ public interface CompanyService {
 
     void deleteById(Long id);
 
-    // NEW: total salary calculation
     Double getTotalSalaryForCompany(Long companyId);
 
     Company findEntityById(Long companyId);

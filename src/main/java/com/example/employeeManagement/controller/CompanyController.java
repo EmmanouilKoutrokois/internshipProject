@@ -43,7 +43,6 @@ public class CompanyController {
         companyService.deleteById(id);
     }
 
-    // ✅ Total salary endpoint returning CompanyDTO with totalSalary
     @GetMapping("/{companyId}/total-salary")
     public ResponseEntity<CompanyDTO> getTotalSalary(@PathVariable Long companyId) {
 
@@ -62,7 +61,6 @@ public class CompanyController {
         return ResponseEntity.ok(dto);
     }
 
-    // Example for creating bonuses — call via injected BonusServiceImpl
     @PostMapping("/{companyId}/bonuses")
     public ResponseEntity<?> createCompanyBonuses(
             @PathVariable Long companyId,
@@ -71,6 +69,7 @@ public class CompanyController {
         var bonuses = BonusServiceImpl.createBonusesForCompany(companyId, season);
         return ResponseEntity.ok(bonuses);
     }
+
     @GetMapping("/{companyId}/employee-products")
     public ResponseEntity<Map<String, List<Product>>> getEmployeeProducts(@PathVariable Long companyId) {
         Map<String, List<Product>> result = companyService.getEmployeeProducts(companyId);
