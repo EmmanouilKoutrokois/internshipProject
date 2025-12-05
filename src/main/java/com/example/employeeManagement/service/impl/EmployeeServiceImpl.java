@@ -59,7 +59,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public EmployeeDTO update(Long id, EmployeeDTO dto) {
-        Employee existing = employeeRepository.findById(id)
+        Employee existing;
+        existing = employeeRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Employee not found"));
 
         if (dto.getFirstName() != null) existing.setFirstName(dto.getFirstName());

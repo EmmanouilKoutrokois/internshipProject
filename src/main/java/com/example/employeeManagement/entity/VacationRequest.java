@@ -1,64 +1,48 @@
 package com.example.employeeManagement.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import com.example.employeeManagement.enums.VacationStatus;
+import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
-import org.hibernate.proxy.HibernateProxy;
+import org.hibernate.annotations.NotFound;
 
-import java.time.LocalDate;
-import java.util.Objects;
-
+@Entity
 @Getter
 @Setter
-@ToString
-@RequiredArgsConstructor
-@Entity
-@Table(name = "vacation_request")
 public class VacationRequest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "start_date", nullable = false)
-    private LocalDate startDate;
-
-    @Column(name = "end_date", nullable = true)
-    private LocalDate endDate;
-
-    @Column(name = "status", nullable = false)
-    private String status; // e.g., PENDING, APPROVED, REJECTED
-
     @ManyToOne
-    @JoinColumn(name = "employee_id")
+    @JoinColumn(name = "employee_id", nullable = false)
     private Employee employee;
 
-    @Override
-    public final boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null) return false;
-        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
-        Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
-        if (thisEffectiveClass != oEffectiveClass) return false;
-        VacationRequest that = (VacationRequest) o;
-        return getId() != null && Objects.equals(getId(), that.getId());
-    }
+    @Column(nullable = false)
+    private String startDate;
 
-    @Override
-    public final int hashCode() {
-        return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
-    }
+    @Column(nullable = false)
+    private String endDate;
 
+    @Column(nullable = false)
+    private Integer vacationDays;
+
+    @Enumerated(EnumType.STRING)
+    private VacationStatus status;
+
+    @ManyToOne
+    @JoinColumn(name = "company_id", nullable = false)
+    private Company company;
+
+    // Helper setters for DTO conversion
     public void setEmployeeId(Long employeeId) {
+        if (this.employee == null) this.employee = new Employee();
+        this.employee.setId(employeeId);
+    }
 
+    public void setCompanyId(Long companyId) {
+        if (this.company == null) this.company = new Company();
+        this.company.setId(companyId);
     }
 }

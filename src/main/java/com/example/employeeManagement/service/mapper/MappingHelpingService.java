@@ -5,6 +5,7 @@ import com.example.employeeManagement.entity.*;
 import com.example.employeeManagement.enums.BonusRate;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 @Component
 public class MappingHelpingService {
@@ -64,4 +65,25 @@ public class MappingHelpingService {
     public Double mapBonusRateToPercentage(String season) {
         return BonusRate.getRateBySeason(season);
     }
+    @Service
+    public class mappinghelpingservice {
+
+        public VacationRequestDTO convertToDTO(VacationRequest vr) {
+            VacationRequestDTO dto = new VacationRequestDTO();
+            dto.setId(vr.getId());
+            dto.setStartDate(vr.getStartDate());
+            dto.setEndDate(vr.getEndDate());
+            dto.setVacationDays(vr.getVacationDays());
+            dto.setStatus(vr.getStatus());
+
+            if (vr.getEmployee() != null) {
+                dto.setEmployeeId(vr.getEmployee().getId());
+                dto.setEmployeeFirstName(vr.getEmployee().getFirstName());
+                dto.setEmployeeLastName(vr.getEmployee().getLastName());
+            }
+
+            return dto;
+        }
+    }
+
 }
