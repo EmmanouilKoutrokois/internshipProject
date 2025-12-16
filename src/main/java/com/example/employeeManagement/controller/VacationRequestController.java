@@ -17,39 +17,15 @@ public class VacationRequestController {
         this.vacationRequestServiceImpl = vacationRequestServiceImpl;
     }
 
-    // Create
-    @PostMapping
-    public ResponseEntity<VacationRequestDTO> createVacationRequest(@RequestBody VacationRequestDTO dto) {
-        VacationRequestDTO saved = vacationRequestServiceImpl.save(dto);
-        return ResponseEntity.ok(saved);
-    }
+    // Existing CRUD endpoints ...
 
-    // Read All
-    @GetMapping
-    public ResponseEntity<List<VacationRequestDTO>> getAllVacationRequests() {
-        List<VacationRequestDTO> requests = vacationRequestServiceImpl.findAll();
-        return ResponseEntity.ok(requests);
-    }
+    // -------------------- NEW ENDPOINT --------------------
+    @PatchMapping("/{vacationId}/respond")
+    public ResponseEntity<VacationRequestDTO> respondToVacationRequest(
+            @PathVariable Long vacationId,
+            @RequestParam String status) {
 
-    // Read One
-    @GetMapping("/{id}")
-    public ResponseEntity<VacationRequestDTO> getVacationRequestById(@PathVariable Long id) {
-        return vacationRequestServiceImpl.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
-
-    // Update
-    @PutMapping("/{id}")
-    public ResponseEntity<VacationRequestDTO> updateVacationRequest(@PathVariable Long id, @RequestBody VacationRequestDTO dto) {
-        VacationRequestDTO updated = vacationRequestServiceImpl.update(id, dto);
+        VacationRequestDTO updated = vacationRequestServiceImpl.respondToVacationRequest(vacationId, status);
         return ResponseEntity.ok(updated);
-    }
-
-    // Delete
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteVacationRequest(@PathVariable Long id) {
-        vacationRequestServiceImpl.deleteById(id);
-        return ResponseEntity.noContent().build();
     }
 }

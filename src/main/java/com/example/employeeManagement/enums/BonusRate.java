@@ -23,6 +23,6 @@ public enum BonusRate {
                 return bonusRate.getRate();
             }
         }
-        throw new IllegalArgumentException("Invalid season: " + season);  // handle invalid season input
+        throw new IllegalArgumentException("Invalid season: " + season);
     }
 }

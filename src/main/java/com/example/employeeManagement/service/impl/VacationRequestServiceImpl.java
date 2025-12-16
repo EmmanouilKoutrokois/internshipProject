@@ -1,8 +1,10 @@
 package com.example.employeeManagement.service.impl;
 
 import com.example.employeeManagement.dto.VacationRequestDTO;
+import com.example.employeeManagement.entity.Employee;
 import com.example.employeeManagement.entity.VacationRequest;
 import com.example.employeeManagement.enums.VacationStatus;
+import com.example.employeeManagement.repository.EmployeeRepository;
 import com.example.employeeManagement.repository.VacationRequestRepository;
 import com.example.employeeManagement.service.VacationRequestService;
 import com.example.employeeManagement.service.mapper.MappingHelpingService;
@@ -17,11 +19,14 @@ import java.util.Optional;
 public class VacationRequestServiceImpl implements VacationRequestService {
 
     private final VacationRequestRepository vacationRequestRepository;
+    private final EmployeeRepository employeeRepository;
     private final MappingHelpingService mappingHelpingService;
 
     public VacationRequestServiceImpl(VacationRequestRepository vacationRequestRepository,
+                                      EmployeeRepository employeeRepository,
                                       MappingHelpingService mappingHelpingService) {
         this.vacationRequestRepository = vacationRequestRepository;
+        this.employeeRepository = employeeRepository;
         this.mappingHelpingService = mappingHelpingService;
     }
 
@@ -71,5 +76,28 @@ public class VacationRequestServiceImpl implements VacationRequestService {
     @Override
     public void deleteById(Long id) {
         vacationRequestRepository.deleteById(id);
+    }
+
+    // -------------------- NEW METHOD --------------------
+    public VacationRequestDTO respondToVacationRequest(Long vacationId, String status) {
+        VacationRequest request = vacationRequestRepository.findById(vacationId)
+                .orElseThrow(() -> new RuntimeException("VacationRequest not found"));
+
+        if (status.equalsIgnoreCase("accepted")) {
+            Employee employee = request.getEmployee();
+            if (employee.getVacationDays() < request.getVacationDays()) {
+                throw new RuntimeException("Employee does not have enough vacation days");
+            }
+            employee.setVacationDays(employee.getVacationDays() - request.getVacationDays());
+            employeeRepository.save(employee);
+            request.setStatus(VacationStatus.APPROVED);
+        } else if (status.equalsIgnoreCase("rejected")) {
+            request.setStatus(VacationStatus.REJECTED);
+        } else {
+            throw new IllegalArgumentException("Invalid status: " + status);
+        }
+
+        VacationRequest updated = vacationRequestRepository.save(request);
+        return mappingHelpingService.convertToDTO(updated);
     }
 }

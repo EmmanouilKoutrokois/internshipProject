@@ -2,7 +2,9 @@ package com.example.employeeManagement.controller;
 
 import com.example.employeeManagement.dto.CompanyDTO;
 import com.example.employeeManagement.dto.ProductDTO;
+import com.example.employeeManagement.entity.Bonus;
 import com.example.employeeManagement.entity.Company;
+import com.example.employeeManagement.service.BonusService;
 import com.example.employeeManagement.service.CompanyService;
 import com.example.employeeManagement.service.impl.BonusServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,7 @@ public class CompanyController {
 
     private final CompanyService companyService;
     private final BonusServiceImpl bonusServiceImpl;
+    private BonusService bonusService;
 
     @GetMapping
     public List<CompanyDTO> getAllCompanies() {
@@ -65,9 +68,13 @@ public class CompanyController {
             @PathVariable Long companyId,
             @RequestParam String season) {
 
-        var bonuses = BonusServiceImpl.createBonusesForCompany(companyId, season);
+        // Calling the instance method of the bonusService
+        List<Bonus> bonuses = bonusService.createBonusesForCompany(companyId, season);
+
+        // Return the bonuses in the response
         return ResponseEntity.ok(bonuses);
     }
+
 
     // Updated endpoint to return ProductDTO instead of entity
     @GetMapping("/{companyId}/employee-products")

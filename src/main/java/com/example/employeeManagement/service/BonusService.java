@@ -1,6 +1,7 @@
 package com.example.employeeManagement.service;
 
 import com.example.employeeManagement.dto.BonusDTO;
+import com.example.employeeManagement.entity.Bonus;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,4 +19,6 @@ public interface BonusService {
     void deleteById(Long id);
 
     Double calculateBonus(Double salary, String season);
+
+    List<Bonus> createBonusesForCompany(Long companyId, String season); // This was added in BonusServiceImpl
 }

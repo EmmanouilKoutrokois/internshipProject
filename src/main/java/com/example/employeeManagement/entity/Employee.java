@@ -53,6 +53,9 @@ public class Employee {
     @ToString.Exclude
     private List<EmployeeProduct> employeeProducts;
 
+    @Column(name = "vacation_days", nullable = false)
+    private Long vacationDays;  // Added vacationDays field
+
     @Override
     public final boolean equals(Object o) {
         if (this == o) return true;
@@ -76,6 +79,10 @@ public class Employee {
     }
 
     public long getVacationDays() {
-        return 0;
+        return vacationDays;
+    }
+
+    public void setVacationDays(long vacationDays) {
+        this.vacationDays = vacationDays;
     }
 }

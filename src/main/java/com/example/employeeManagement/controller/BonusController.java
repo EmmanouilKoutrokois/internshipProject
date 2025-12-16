@@ -1,19 +1,11 @@
 package com.example.employeeManagement.controller;
 
 import com.example.employeeManagement.dto.BonusDTO;
-import com.example.employeeManagement.enums.BonusRate;
+import com.example.employeeManagement.entity.Bonus;
 import com.example.employeeManagement.service.impl.BonusServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,55 +13,62 @@ import java.util.List;
 @RequestMapping("/bonuses")
 public class BonusController {
 
-    @Autowired
     private final BonusServiceImpl bonusService;
 
+    // Constructor-based injection for BonusServiceImpl
+    @Autowired
     public BonusController(BonusServiceImpl bonusService) {
         this.bonusService = bonusService;
     }
 
-    // Create
+    // Create Bonus
     @PostMapping
     public ResponseEntity<BonusDTO> createBonus(@RequestBody BonusDTO dto) {
         BonusDTO saved = bonusService.save(dto);
         return ResponseEntity.ok(saved);
     }
 
-    // Read All
+    // Get All Bonuses
     @GetMapping
     public ResponseEntity<List<BonusDTO>> getAllBonuses() {
         List<BonusDTO> bonuses = bonusService.findAll();
         return ResponseEntity.ok(bonuses);
     }
 
-    // Read One
+    // Get Bonus By ID
     @GetMapping("/{id}")
     public ResponseEntity<BonusDTO> getBonusById(@PathVariable Long id) {
-        BonusDTO dto = bonusService.findById(id); // returns BonusDTO, not Optional
-        if (dto != null) {
-            return ResponseEntity.ok(dto);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return bonusService.findById(id)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
-    // Update
+
+    // Update Bonus
     @PutMapping("/{id}")
     public ResponseEntity<BonusDTO> updateBonus(@PathVariable Long id, @RequestBody BonusDTO dto) {
         BonusDTO updated = bonusService.update(id, dto);
         return ResponseEntity.ok(updated);
     }
 
-    // Delete
+    // Delete Bonus
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteBonus(@PathVariable Long id) {
         bonusService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/calculate-bonus")
-    public Double calculateBonus(@RequestParam Double salary, @RequestParam String season) {
-        Double rate = BonusRate.getRateBySeason(season);
-        return salary * rate;
+    // Create Bonuses for all Employees in a Company
+    @PostMapping("/create")
+    public ResponseEntity<List<Bonus>> createBonuses(
+            @RequestParam Long companyId,
+            @RequestParam String season) {
+        List<Bonus> bonuses = bonusService.createBonusesForCompany(companyId, season);
+        return ResponseEntity.ok(bonuses);
     }
 
+    // Bonus Calculation
+    @GetMapping("/calculate-bonus")
+    public Double calculateBonus(@RequestParam Double salary, @RequestParam String season) {
+        return bonusService.calculateBonus(salary, season);
+    }
 }

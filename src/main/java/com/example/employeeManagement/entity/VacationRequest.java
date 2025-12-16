@@ -4,11 +4,11 @@ import com.example.employeeManagement.enums.VacationStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.NotFound;
 
-@Entity
 @Getter
 @Setter
+@Entity
+@Table(name = "vacationrequest")  // Ensure this table name matches your database exactly.
 public class VacationRequest {
 
     @Id
