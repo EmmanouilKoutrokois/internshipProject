@@ -1,6 +1,7 @@
 package com.example.employeeManagement.controller;
 
 import com.example.employeeManagement.dto.BonusDTO;
+import com.example.employeeManagement.enums.BonusRate;
 import com.example.employeeManagement.service.impl.BonusServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -66,10 +67,9 @@ public class BonusController {
     }
 
     @GetMapping("/calculate-bonus")
-    public ResponseEntity<Double> calculateBonus(
-            @RequestParam Double salary,
-            @RequestParam String season) {
-        Double result = bonusService.calculateBonus(salary, season);
-        return ResponseEntity.ok(result);
+    public Double calculateBonus(@RequestParam Double salary, @RequestParam String season) {
+        Double rate = BonusRate.getRateBySeason(season);
+        return salary * rate;
     }
+
 }
