@@ -1,7 +1,9 @@
 package com.example.employeeManagement.service.impl;
 
 import com.example.employeeManagement.dto.CompanyDTO;
+import com.example.employeeManagement.dto.ProductDTO;
 import com.example.employeeManagement.entity.Company;
+import com.example.employeeManagement.entity.EmployeeProduct;
 import com.example.employeeManagement.repository.CompanyRepository;
 import com.example.employeeManagement.service.CompanyService;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +21,6 @@ public class CompanyServiceImpl implements CompanyService {
     private final CompanyRepository companyRepository;
 
     // -------------------- DTO MAPPING --------------------
-
     private CompanyDTO toDTO(Company entity) {
         CompanyDTO dto = new CompanyDTO();
         dto.setId(entity.getId());
@@ -28,14 +29,12 @@ public class CompanyServiceImpl implements CompanyService {
         dto.setPhoneNumber(entity.getPhoneNumber());
         dto.setEmail(entity.getEmail());
 
-        // If you want to include salary in ALL responses:
         if (entity.getEmployees() != null) {
             double totalSalary = entity.getEmployees().stream()
-                    .mapToDouble(emp -> emp.getSalary() == null ? 0 : emp.getSalary())
+                    .mapToDouble(emp -> emp.getSalary() != null ? emp.getSalary() : 0)
                     .sum();
             dto.setTotalSalary(totalSalary);
         }
-
         return dto;
     }
 
@@ -50,7 +49,6 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     // -------------------- SERVICE METHODS --------------------
-
     @Override
     public CompanyDTO save(CompanyDTO dto) {
         Company entity = toEntity(dto);
@@ -60,16 +58,14 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public List<CompanyDTO> findAll() {
-        return companyRepository.findAll()
-                .stream()
+        return companyRepository.findAll().stream()
                 .map(this::toDTO)
                 .collect(Collectors.toList());
     }
 
     @Override
     public Optional<CompanyDTO> findById(Long id) {
-        return companyRepository.findById(id)
-                .map(this::toDTO);
+        return companyRepository.findById(id).map(this::toDTO);
     }
 
     @Override
@@ -103,24 +99,35 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public Double getTotalSalaryForCompany(Long companyId) {
         Company company = findEntityById(companyId);
-
         return company.getEmployees().stream()
                 .mapToDouble(emp -> emp.getSalary() != null ? emp.getSalary() : 0)
                 .sum();
     }
 
+    // -------------------- FIXED METHOD --------------------
     @Override
-    public Map<String, List<com.example.employeeManagement.entity.Product>> getEmployeeProducts(Long companyId) {
+    public Map<String, List<ProductDTO>> getEmployeeProducts(Long companyId) {
         Company company = findEntityById(companyId);
 
         return company.getEmployees().stream()
                 .filter(emp -> emp.getEmployeeProducts() != null && !emp.getEmployeeProducts().isEmpty())
                 .collect(Collectors.toMap(
                         emp -> emp.getFirstName() + " " + emp.getLastName(),
-                        emp -> emp.getEmployeeProducts()
-                                .stream()
-                                .map(ep -> ep.getProduct())
-                                .collect(Collectors.toList())
+                        emp -> emp.getEmployeeProducts().stream()
+                                .map(this::mapToProductDTO)
+                                .toList()
                 ));
+    }
+
+    // Helper: EmployeeProduct → ProductDTO
+    private ProductDTO mapToProductDTO(EmployeeProduct ep) {
+        ProductDTO dto = new ProductDTO();
+        dto.setId(ep.getProduct().getId());
+        dto.setName(ep.getProduct().getName());
+        dto.setDescription(ep.getProduct().getDescription());
+        dto.setPrice(ep.getProduct().getPrice());
+        // If you want, add quantity to ProductDTO:
+        // dto.setQuantity(ep.getQuantity());
+        return dto;
     }
 }

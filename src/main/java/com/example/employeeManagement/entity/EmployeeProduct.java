@@ -1,5 +1,6 @@
 package com.example.employeeManagement.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,7 +21,7 @@ import java.util.Objects;
 @ToString
 @RequiredArgsConstructor
 @Entity
-@Table(name = "employee_product")
+@Table(name = "employeeproduct")
 public class EmployeeProduct {
 
     @Id
@@ -29,6 +30,7 @@ public class EmployeeProduct {
 
     @ManyToOne
     @JoinColumn(name = "employee_id")
+    @JsonIgnore
     private Employee employee;
 
     @ManyToOne

@@ -1,8 +1,8 @@
 package com.example.employeeManagement.controller;
 
 import com.example.employeeManagement.dto.CompanyDTO;
+import com.example.employeeManagement.dto.ProductDTO;
 import com.example.employeeManagement.entity.Company;
-import com.example.employeeManagement.entity.Product;
 import com.example.employeeManagement.service.CompanyService;
 import com.example.employeeManagement.service.impl.BonusServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -47,7 +47,6 @@ public class CompanyController {
     public ResponseEntity<CompanyDTO> getTotalSalary(@PathVariable Long companyId) {
 
         Company company = companyService.findEntityById(companyId);
-
         Double totalSalary = companyService.getTotalSalaryForCompany(companyId);
 
         CompanyDTO dto = new CompanyDTO();
@@ -70,10 +69,10 @@ public class CompanyController {
         return ResponseEntity.ok(bonuses);
     }
 
+    // Updated endpoint to return ProductDTO instead of entity
     @GetMapping("/{companyId}/employee-products")
-    public ResponseEntity<Map<String, List<Product>>> getEmployeeProducts(@PathVariable Long companyId) {
-        Map<String, List<Product>> result = companyService.getEmployeeProducts(companyId);
+    public ResponseEntity<Map<String, List<ProductDTO>>> getEmployeeProducts(@PathVariable Long companyId) {
+        Map<String, List<ProductDTO>> result = companyService.getEmployeeProducts(companyId);
         return ResponseEntity.ok(result);
     }
-
 }

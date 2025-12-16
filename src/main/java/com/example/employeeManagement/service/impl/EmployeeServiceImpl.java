@@ -3,7 +3,11 @@ package com.example.employeeManagement.service.impl;
 import com.example.employeeManagement.dto.EmployeeDTO;
 import com.example.employeeManagement.entity.Company;
 import com.example.employeeManagement.entity.Employee;
+import com.example.employeeManagement.entity.EmployeeProduct;
+import com.example.employeeManagement.entity.Product;
+import com.example.employeeManagement.repository.EmployeeProductRepository;
 import com.example.employeeManagement.repository.EmployeeRepository;
+import com.example.employeeManagement.repository.ProductRepository;
 import com.example.employeeManagement.service.CompanyService;
 import com.example.employeeManagement.service.EmployeeService;
 import com.example.employeeManagement.service.mapper.MappingHelpingService;
@@ -18,13 +22,19 @@ import java.util.Optional;
 public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepository employeeRepository;
+    private final ProductRepository productRepository;
+    private final EmployeeProductRepository employeeProductRepository;
     private final MappingHelpingService mappingHelpingService;
     private final CompanyService companyService;
 
     public EmployeeServiceImpl(EmployeeRepository employeeRepository,
+                               ProductRepository productRepository,
+                               EmployeeProductRepository employeeProductRepository,
                                MappingHelpingService mappingHelpingService,
                                CompanyService companyService) {
         this.employeeRepository = employeeRepository;
+        this.productRepository = productRepository;
+        this.employeeProductRepository = employeeProductRepository;
         this.mappingHelpingService = mappingHelpingService;
         this.companyService = companyService;
     }
@@ -59,8 +69,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public EmployeeDTO update(Long id, EmployeeDTO dto) {
-        Employee existing;
-        existing = employeeRepository.findById(id)
+        Employee existing = employeeRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Employee not found"));
 
         if (dto.getFirstName() != null) existing.setFirstName(dto.getFirstName());
@@ -79,5 +88,20 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public void deleteById(Long id) {
         employeeRepository.deleteById(id);
+    }
+
+    @Override
+    public void assignProductToEmployee(Long employeeId, Long productId) {
+        Employee employee = employeeRepository.findById(employeeId)
+                .orElseThrow(() -> new RuntimeException("Employee not found: " + employeeId));
+
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Product not found: " + productId));
+
+        EmployeeProduct employeeProduct = new EmployeeProduct();
+        employeeProduct.setEmployee(employee);
+        employeeProduct.setProduct(product);
+
+        employeeProductRepository.save(employeeProduct);
     }
 }
